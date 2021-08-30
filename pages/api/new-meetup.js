@@ -12,10 +12,10 @@ async function handler(req, res) {
     const data = req.body;
     console.log('got data in api/new-meetup', data);
 
+    let client;
+
     try {
-      const client = await MongoClient.connect(
-        'mongodb+srv://neilaAdmin:hidden1234@frakfurtclusteraws.gdyfq.mongodb.net/meetupDb?retryWrites=true&w=majority'
-      );
+      client = await MongoClient.connect(process.env.MONGO_CONN);
       const db = client.db();
 
       // sukurti arba nusitaikyti i esama collection
