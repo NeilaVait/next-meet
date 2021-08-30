@@ -1,4 +1,5 @@
 import NewMeetupForm from './../../components/meetups/NewMeetupForm';
+
 const NewMeetup = () => {
   function addMeetupHandler(enteredData) {
     console.log(enteredData);
