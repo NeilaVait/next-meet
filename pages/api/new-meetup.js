@@ -12,13 +12,22 @@ async function handler(req, res) {
     const data = req.body;
     console.log('got data in api/new-meetup', data);
 
-    const client = await MongoClient.connect(
-      'mongodb+srv://neilaAdmin:hidden1234@frakfurtclusteraws.gdyfq.mongodb.net/meetupDb?retryWrites=true&w=majority'
-    );
+    try {
+      const client = await MongoClient.connect(
+        'mongodb+srv://neilaAdmin:hidden1234@frakfurtclusteraws.gdyfq.mongodb.net/meetupDb?retryWrites=true&w=majority'
+      );
+      const db = client.db();
 
-    client.close();
+      // sukurti arba nusitaikyti i esama collection
+      const meetupCollection = db.collection('meetups');
+      const insertResult = await meetupCollection.insertOne(data);
 
-    res.status(200).json({ msg: 'success', data });
+      res.status(200).json({ msg: 'success', insertResult });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    } finally {
+      client.close();
+    }
   }
 }
 
