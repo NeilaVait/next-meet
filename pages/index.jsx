@@ -32,32 +32,33 @@ const HomePage = (props) => {
 
 ////////////////////////////// SSR
 
-export function getServerSideProps(context) {
-  // sitas kodas niekada neatsidurs pas klienta
-  const req = context.req;
-  const res = context.res;
-  console.log(req);
-
-  return {
-    props: {
-      meetups: DUMMY_MEETUPS,
-    },
-  };
-}
-
-////////////////////////////// SSG
-// export function getStaticProps() {
+// export function getServerSideProps(context) {
 //   // sitas kodas niekada neatsidurs pas klienta
-//   // veikia tiktai pages, pavadinimas butinai toks pats
-//   // cia galima sakyti yra back end erdve
-//   // galetu buti fetch, validacija ir pan
-//   // paduodam duomenis ir nebereikia state
+//   const req = context.req;
+//   const res = context.res;
+//   console.log(req);
+
 //   return {
 //     props: {
 //       meetups: DUMMY_MEETUPS,
 //     },
-//     revalidate: 10, // kas 10s duomenys atnaujinami
 //   };
 // }
+
+////////////////////////////// SSG
+
+export function getStaticProps() {
+  // sitas kodas niekada neatsidurs pas klienta
+  // veikia tiktai pages, pavadinimas butinai toks pats
+  // cia galima sakyti yra back end erdve
+  // galetu buti fetch, validacija ir pan
+  // paduodam duomenis ir nebereikia state
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+    revalidate: 10, // kas 10s duomenys atnaujinami
+  };
+}
 
 export default HomePage;
