@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { getCollection } from '../utils/mongo-data';
 import MeetupList from './../components/meetups/MeetupList';
-import { MongoClient } from 'mongodb';
+
 // jei importuojam kazka kas bus naudojama getserversideprops arba getstaticprops
 // jie nebuna prideti prie galutinio react komponento
 
@@ -57,14 +57,7 @@ export async function getStaticProps() {
   // cia galima sakyti yra back end erdve
   // galetu buti fetch, validacija ir pan
   // paduodam duomenis ir nebereikia state
-  const client = await MongoClient.connect(process.env.MONGO_CONN);
-  const db = client.db();
-
-  // sukurti arba nusitaikyti i esama collection
-  const meetupCollection = db.collection('meetups');
-  const allMeets = await meetupCollection.find({}).toArray();
-  client.close();
-  console.log(allMeets);
+  const allMeets = await getCollection();
   const meetsInRequiredFormat = allMeets.map((m) => {
     // _id yra ObjectId, klaida jei bandom nuskaityt kaip stringa
     return {

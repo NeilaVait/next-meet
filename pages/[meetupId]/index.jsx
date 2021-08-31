@@ -1,5 +1,6 @@
 import MeetupDetail from './../../components/meetups/MeetupDetail';
-import { MongoClient } from 'mongodb';
+// import { MongoClient } from 'mongodb';
+import { getCollection } from './../../utils/mongo-data';
 
 const MeetupDetails = (props) => {
   return (
@@ -15,15 +16,9 @@ const MeetupDetails = (props) => {
 };
 
 export async function getStaticPaths() {
-  // nurodo pagal kokia dinamine informacija sugeneruoti statinius puslapius
-  const client = await MongoClient.connect(process.env.MONGO_CONN);
-  const db = client.db();
+  const allMeets = await getCollection();
 
-  // sukurti arba nusitaikyti i esama collection
-  const meetupCollection = db.collection('meetups');
-  const allMeets = await meetupCollection.find({}).toArray();
-  client.close();
-  console.log('meets getstaticpaths');
+  console.log('meets getstaticpaths0', allMeets);
   const pathsArrOfCurrentMeets = allMeets.map((m) => {
     return {
       params: {
