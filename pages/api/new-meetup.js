@@ -22,7 +22,7 @@ async function handler(req, res) {
       const meetupCollection = db.collection('meetups');
       const insertResult = await meetupCollection.insertOne(data);
 
-      res.status(200).json({ msg: 'success', insertResult });
+      res.status(201).json({ msg: 'success', insertResult });
     } catch (error) {
       res.status(500).json({ error: error.message });
     } finally {

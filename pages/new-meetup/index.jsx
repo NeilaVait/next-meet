@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 
 const NewMeetup = () => {
   const router = useRouter();
+
   async function addMeetupHandler(enteredMeetupData) {
     console.log(enteredMeetupData);
     // send data to api
     const result = await axios.post('/api/new-meetup', enteredMeetupData);
     console.log(result.data);
-    router.push('/');
+    if (result.data) router.push('/');
   }
 
   return (
