@@ -2,12 +2,15 @@ import MeetupDetail from './../../components/meetups/MeetupDetail';
 import { getCollection } from './../../utils/mongo-data';
 import { ObjectId } from 'mongodb';
 import Head from 'next/head';
+import { SITE_NAME } from './../../utils/config';
 
 const MeetupDetails = (props) => {
   return (
     <>
       <Head>
-        <title>{props.meetupData.title} - React Meetup</title>
+        <title>
+          {props.meetupData.title} - {SITE_NAME}
+        </title>
         <meta name="description" content={props.meetupData.description} />
       </Head>
       <MeetupDetail

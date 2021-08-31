@@ -1,6 +1,7 @@
 import { getCollection } from '../utils/mongo-data';
 import MeetupList from './../components/meetups/MeetupList';
 import Head from 'next/head';
+import { SITE_NAME } from './../utils/config';
 
 // jei importuojam kazka kas bus naudojama getserversideprops arba getstaticprops
 // jie nebuna prideti prie galutinio react komponento
@@ -9,7 +10,7 @@ const HomePage = (props) => {
   return (
     <>
       <Head>
-        <title>All Meetups - React Meetups</title>
+        <title>All Meetups - {SITE_NAME}</title>
         <meta name="description" content="Browse meetups around the world" />
       </Head>
       <h1>Home meetup page</h1>
