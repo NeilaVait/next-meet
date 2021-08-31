@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { getCollection } from '../../utils/mongo-data';
 
 // /api/new-meetup
 
@@ -12,20 +12,16 @@ async function handler(req, res) {
     const data = req.body;
     console.log('got data in api/new-meetup', data);
 
-    let client;
-
     try {
-      client = await MongoClient.connect(process.env.MONGO_CONN);
-      const db = client.db();
+      const [meetupCollection] = await getCollection();
 
-      // sukurti arba nusitaikyti i esama collection
-      const meetupCollection = db.collection('meetups');
       const insertResult = await meetupCollection.insertOne(data);
 
       res.status(201).json({ msg: 'success', insertResult });
     } catch (error) {
       res.status(500).json({ error: error.message });
     } finally {
+      const [client] = await getCollection();
       client.close();
     }
   }

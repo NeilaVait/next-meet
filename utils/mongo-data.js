@@ -5,7 +5,6 @@ export async function getCollection() {
   const db = client.db();
   // sukurti arba nusitaikyti i esama collection
   const meetupCollection = db.collection('meetups');
-  const allMeets = await meetupCollection.find({}).toArray();
-  client.close();
-  return allMeets;
+
+  return [meetupCollection, client];
 }

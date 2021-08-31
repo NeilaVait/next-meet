@@ -1,6 +1,6 @@
 import MeetupDetail from './../../components/meetups/MeetupDetail';
-// import { MongoClient } from 'mongodb';
 import { getCollection } from './../../utils/mongo-data';
+import { ObjectId } from 'mongodb';
 
 const MeetupDetails = (props) => {
   return (
@@ -16,9 +16,10 @@ const MeetupDetails = (props) => {
 };
 
 export async function getStaticPaths() {
-  const allMeets = await getCollection();
+  const [meetupCollection, client] = await getCollection();
+  const allMeets = await meetupCollection.find({}).toArray();
+  client.close();
 
-  console.log('meets getstaticpaths0', allMeets);
   const pathsArrOfCurrentMeets = allMeets.map((m) => {
     return {
       params: {
@@ -26,7 +27,6 @@ export async function getStaticPaths() {
       },
     };
   });
-  console.log(allMeets);
 
   return {
     fallback: false, // TRUE jei einam i psl kurio nera aprasyta paths tai tas puslapis sugeneruojamas uzklausos metu(at run time)
@@ -35,16 +35,21 @@ export async function getStaticPaths() {
   };
 }
 
-export function getStaticProps(context) {
-  console.log(context.params.meetupId);
+export async function getStaticProps(context) {
+  const [meetupCollection, client] = await getCollection();
+  const currentId = context.params.meetupId;
+  const currentMeetObj = await meetupCollection.findOne({ _id: ObjectId(currentId) });
+
+  client.close();
+
   return {
     props: {
       meetupData: {
-        id: 'm1',
-        title: 'The first meetup',
-        image: 'https://picsum.photos/id/1067/900/600/',
-        address: 'Some street 5, 23548, New York, New York',
-        description: 'First meetup in NY',
+        id: currentId,
+        title: currentMeetObj.title,
+        image: currentMeetObj.image,
+        address: currentMeetObj.address,
+        description: currentMeetObj.description,
       },
     },
     revalidate: 5,

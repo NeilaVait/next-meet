@@ -57,7 +57,11 @@ export async function getStaticProps() {
   // cia galima sakyti yra back end erdve
   // galetu buti fetch, validacija ir pan
   // paduodam duomenis ir nebereikia state
-  const allMeets = await getCollection();
+  const [meetupCollection, client] = await getCollection();
+
+  const allMeets = await meetupCollection.find({}).toArray();
+  client.close();
+
   const meetsInRequiredFormat = allMeets.map((m) => {
     // _id yra ObjectId, klaida jei bandom nuskaityt kaip stringa
     return {
